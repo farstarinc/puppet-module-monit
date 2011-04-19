@@ -26,16 +26,17 @@ providing the module directory you cloned this repo to:
 Usage
 -----
 
-To install and configure Monit, import the module:
+To install and configure Monit, include the module:
 
-    import monit
+    include monit
 
-You can override defaults in the Monit config by importing
+You can override defaults in the Monit config by including
 the module with this special syntax:
 
-    class { monit: admin => "eivind@uggedal.com" }
+    class { monit: admin => "eivind@uggedal.com", interval => 30 }
 
-Setting up monitoring of processes is done with the `monit::site` resource:
+Setting up monitoring of processes is done with the `monit::site` resource.
+Note that the name needs to be the same as an init script in `/etc/init.d`:
 
     monit::monitor { "sshd":
       pidfile => "/var/run/sshd.pid",
@@ -53,4 +54,16 @@ Alternatively you can specify a Unix socket to check:
     monit::monitor { "gunicorn-blog":
       pidfile => "/var/run/gunicorn/blog.pid",
       socket => "/var/run/gunicorn/blog.sock",
+    }
+
+You can also provide additional checks:
+
+    $reload_blog = "/etc/init.d/gunicorn-blog reload"
+
+    monit::monitor { "gunicorn-blog":
+      pidfile => "/var/run/gunicorn/blog.pid",
+      socket => "/var/run/gunicorn/blog.sock",
+      checks => ["if totalmem > 300 MB for 2 cycles then exec \"$reload_blog\"",
+                 "if totalmem > 300 MB for 3 cycles then restart",
+                 "if cpu > 50% for 2 cycles then alert"],
     }
