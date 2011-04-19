@@ -38,7 +38,7 @@ the module with this special syntax:
 Setting up monitoring of processes is done with the `monit::site` resource.
 Note that the name needs to be the same as an init script in `/etc/init.d`:
 
-    monit::monitor { "sshd":
+    monit::monitor { "ssh":
       pidfile => "/var/run/sshd.pid",
     }
 
