@@ -5,6 +5,7 @@ define monit::monitor($pidfile,
                       $checks=[]) {
 
   file { "/etc/monit/conf.d/$name.conf":
+    ensure => $ensure,
     content => template("monit/process.conf.erb"),
     notify => Service["monit"],
   }

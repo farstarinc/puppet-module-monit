@@ -8,12 +8,6 @@ Tested on Debian GNU/Linux 6.0 Squeeze. Patches for other
 operating systems welcome.
 
 
-TODO
-----
-
-* Refresh service when files are removed from /etc/monit/conf.d/
-
-
 Installation
 ------------
 
