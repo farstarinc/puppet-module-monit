@@ -9,11 +9,13 @@ class monit($ensure=present, $admin="", $interval=60) {
     ensure => $ensure,
     content => template("monit/monitrc.erb"),
     mode => 600,
+    require => Package["monit"],
   }
 
   file { "/etc/default/monit":
     ensure => $ensure,
     content => "startup=1\n",
+    require => Package["monit"],
   }
 
   service { "monit":
