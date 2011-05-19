@@ -7,6 +7,6 @@
         compress
         delaycompress
         postrotate
-                invoke-rc.d monit reload > /dev/null
+                invoke-rc.d monit restart > /dev/null
         endscript
 }

@@ -17,24 +17,10 @@ class monit($ensure=present, $admin="", $interval=60) {
       content => "startup=1\n",
       require => Package["monit"];
 
-    "/etc/init.d/monit":
-      ensure => $ensure,
-      source => "puppet:///modules/monit/monit.init",
-      mode => 744,
-      require => Package["monit"];
-
     "/etc/logrotate.d/monit":
       ensure => $ensure,
       source => "puppet:///modules/monit/monit.logrotate",
       require => Package[monit];
-
-    "/var/lib/monit/events":
-      ensure => $ensure ? {
-        'present' => "directory",
-        default => $ensure,
-      },
-      mode => 700,
-      force => $is_absent;
   }
 
   service { "monit":
@@ -44,7 +30,6 @@ class monit($ensure=present, $admin="", $interval=60) {
     pattern => "/usr/sbin/monit",
     subscribe => File["/etc/monit/monitrc"],
     require => [File["/etc/monit/monitrc"],
-                File["/etc/logrotate.d/monit"],
-                File["/var/lib/monit/events"]],
+                File["/etc/logrotate.d/monit"]],
   }
 }

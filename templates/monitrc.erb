@@ -58,9 +58,9 @@ set daemon  <%= interval %> # check services at N-second intervals
 ## size using the SLOTS option (if omitted, the queue is limited by space 
 ## available in the back end filesystem).
 #
-  set eventqueue
-      basedir /var/lib/monit/events # set the base directory where events will be stored
-      slots 100                     # optionally limit the queue size
+#  set eventqueue
+#      basedir /var/lib/monit/events # set the base directory where events will be stored
+#      slots 100                     # optionally limit the queue size
 #
 #
 ## Send status and events to M/Monit (for more informations about M/Monit 
