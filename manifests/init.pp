@@ -26,7 +26,7 @@ class monit($ensure=present, $admin="", $interval=60) {
   service { "monit":
     ensure => $is_present,
     enable => $is_present,
-    hasrestart => true,
+    hasrestart => $is_present,
     pattern => "/usr/sbin/monit",
     subscribe => File["/etc/monit/monitrc"],
     require => [File["/etc/monit/monitrc"],
