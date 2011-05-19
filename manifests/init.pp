@@ -17,6 +17,12 @@ class monit($ensure=present, $admin="", $interval=60) {
       content => "startup=1\n",
       require => Package["monit"];
 
+    "/etc/init.d/monit":
+      ensure => $ensure,
+      source => "puppet:///modules/monit/monit.init",
+      mode => 744,
+      require => Package["monit"];
+
     "/etc/logrotate.d/monit":
       ensure => $ensure,
       source => "puppet:///modules/monit/monit.logrotate",
