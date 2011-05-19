@@ -27,7 +27,10 @@ class monit($ensure=present, $admin="", $interval=60) {
     ensure => $is_present,
     enable => $is_present,
     hasrestart => $is_present,
-    pattern => "/usr/sbin/monit",
+    pattern => $ensure ? {
+      'present' => "/usr/sbin/monit",
+      default => undef,
+    },
     subscribe => File["/etc/monit/monitrc"],
     require => [File["/etc/monit/monitrc"],
                 File["/etc/logrotate.d/monit"]],
