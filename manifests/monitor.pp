@@ -8,5 +8,6 @@ define monit::monitor($pidfile,
     ensure => $ensure,
     content => template("monit/process.conf.erb"),
     notify => Service["monit"],
+    require => Package["monit"],
   }
 }
