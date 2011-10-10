@@ -1,6 +1,11 @@
 check process <%= name %> with pidfile <%= pidfile %>
+<% if upstart -%>
+  start program = "/sbin/start <% upstart_name %>"
+  stop program = "/sbin/stop <% upstart_name %>"
+<% else -%>
   start program = "/etc/init.d/<%= name %> start"
   stop program  = "/etc/init.d/<%= name %> stop"
+<% end -%>
 <% if ip_port.to_i > 0 -%>
   if failed port <%= ip_port %> then restart
 <% elsif socket.any? -%>
