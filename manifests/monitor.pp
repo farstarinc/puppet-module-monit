@@ -1,13 +1,13 @@
 define monit::monitor($pidfile,
                       $ensure=present,
                       $ip_port=0,
-                      $socket="",
+                      $socket='',
                       $checks=[]) {
 
   file { "/etc/monit/conf.d/$name.conf":
-    ensure => $ensure,
-    content => template("monit/process.conf.erb"),
-    notify => Service["monit"],
-    require => Package["monit"],
+    ensure  => $ensure,
+    content => template('monit/process.conf.erb'),
+    notify  => Service['monit'],
+    require => Package['monit'],
   }
 }
