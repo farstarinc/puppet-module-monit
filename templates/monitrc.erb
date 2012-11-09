@@ -24,8 +24,10 @@ set daemon  <%= interval %> # check services at N-second intervals
 ## omitted, Monit will use 'user' facility by default. If you want to log to 
 ## a standalone log file instead, specify the full path to the log file
 #
-# set logfile syslog facility log_daemon                       
-  set logfile /var/log/monit.log
+# set logfile syslog facility log_daemon
+<% if @logfile -%>
+set logfile <%= @logfile %>
+<% end -%>
 #
 #
 ### Set the location of the Monit id file which stores the unique id for the
@@ -97,9 +99,9 @@ set daemon  <%= interval %> # check services at N-second intervals
 ## service defined in this file has errors. Alerts may be restricted on 
 ## events by using a filter as in the second example below. 
 #
-<% if admin.any? %>
-set alert <%= admin %>                       # receive all alerts
-<% end %>
+<% if @admin -%>
+set alert <%= @admin %>                       # receive all alerts
+<% end -%>
 # set alert manager@foo.bar only on { timeout }  # receive just service-
 #                                                # timeout alert
 #
@@ -238,5 +240,5 @@ set httpd port 2812 and
 ## directories.
 #
 
-include /etc/monit/conf.d/*
+include <%= @conf_include %>
 
