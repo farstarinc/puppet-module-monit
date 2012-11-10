@@ -1,43 +1,90 @@
-class monit($ensure=present, $admin='', $interval=60) {
-  $is_present = $ensure == 'present'
+# == Class: monit
+#
+# This module controls Monit
+#
+# === Parameters
+#
+# [*ensure*]   - If you want the service running or not
+# [*admin*]    - Admin email address
+# [*interval*] - How frequently the check runs
+# [*logfile*]  - What file for monit use for logging
+#
+# === Examples
+#
+#  class { 'monit':
+#    admin    => 'me@mydomain.local',
+#    interval => 30,
+#  }
+#
+# === Authors
+#
+# Eivind Uggedal <eivind@uggedal.com>
+# Jonathan Thurman <jthurman@newrelic.com>
+#
+# === Copyright
+#
+# Copyright 2011 Eivind Uggedal <eivind@uggedal.com>
+#
+class monit (
+  $ensure   = present,
+  $admin    = undef,
+  $interval = 60,
+  $logfile  = $monit::params::logfile,
+) inherits monit::params {
 
-  $service_pattern = $ensure ? {
-    'present'   => '/usr/sbin/monit',
-    default     => undef,
+  $conf_include = "${monit::params::conf_dir}/*"
+
+  if ($ensure == 'present') {
+    $run_service = true
+  } else {
+    $run_service = false
   }
 
-  package { 'monit':
+  package { $monit::params::monit_package:
     ensure => $ensure,
   }
 
-  file { '/etc/monit/monitrc':
+  # Template uses: $admin, $conf_include, $interval, $logfile
+  file { $monit::params::conf_file:
     ensure  => $ensure,
     content => template('monit/monitrc.erb'),
     mode    => '0600',
-    require => Package['monit'],
+    require => Package[$monit::params::monit_package],
+    notify  => Service[$monit::params::monit_service],
   }
 
-  file { '/etc/default/monit':
+  file { $monit::params::conf_dir:
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
+  }
+
+  # Not all platforms need this
+  if ($monit::params::conf_default) {
+    file { $monit::params::conf_default:
+      ensure  => $ensure,
+      content => "startup=1\n",
+      require => Package[$monit::params::monit_package],
+    }
+  }
+
+  # Template uses: $logfile
+  file { $monit::params::logrotate_script:
     ensure  => $ensure,
-    content => "startup=1\n",
-    require => Package['monit'],
+    content => template("monit/${monit::params::logrotate_source}"),
+    require => Package[$monit::params::monit_package],
   }
 
-  file { '/etc/logrotate.d/monit':
-    ensure  => $ensure,
-    source  => 'puppet:///modules/monit/monit.logrotate',
-    require => Package['monit'],
-  }
-
-  service { 'monit':
-    ensure      => $is_present,
-    enable      => $is_present,
-    hasrestart  => $is_present,
-    pattern     => $service_pattern,
-    subscribe   => File['/etc/monit/monitrc'],
-    require     => [
-      File['/etc/monit/monitrc'],
-      File['/etc/logrotate.d/monit']
+  service { $monit::params::monit_service:
+    ensure     => $ensure,
+    enable     => $run_service,
+    hasrestart => true,
+    hasstatus  => true,
+    subscribe  => File[$monit::params::conf_file],
+    require    => [
+      File[$monit::params::conf_file],
+      File[$monit::params::logrotate_script]
     ],
   }
 }

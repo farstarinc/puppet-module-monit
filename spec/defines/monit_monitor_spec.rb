@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'monit', :type => :class do
+describe 'monit::monitor', :type => :define do
   context "osfamily = RedHat" do
     let :facts do
       {
@@ -11,13 +11,16 @@ describe 'monit', :type => :class do
     end
 
     context "default usage (osfamily = RedHat)" do
-      let(:title) { 'monit-basic' }
+      let(:title) { 'monit-monitor-basic' }
+
+      let(:params) {
+        {
+          'pidfile' => '/var/run/monit.pid',
+        }
+      }
 
       it 'should compile' do
-        should contain_file('/etc/monit.conf')
-        should contain_file('/etc/monit.d')
-        should contain_file('/etc/logrotate.d/monit')
-        should contain_service('monit')
+        should contain_file('/etc/monit.d/monit-monitor-basic.conf')
       end
     end
   end
@@ -32,14 +35,18 @@ describe 'monit', :type => :class do
     end
 
     context "default usage (osfamily = Debian)" do
-      let(:title) { 'monit-basic' }
+      let(:title) { 'monit-monitor-basic' }
+
+      let(:params) {
+        {
+          'pidfile' => '/var/run/monit.pid',
+        }
+      }
 
       it 'should compile' do
-        should contain_file('/etc/monit/monitrc')
-        should contain_file('/etc/monit/conf.d')
-        should contain_file('/etc/logrotate.d/monit')
-        should contain_service('monit')
+        should contain_file('/etc/monit/conf.d/monit-monitor-basic.conf')
       end
     end
   end
+
 end
