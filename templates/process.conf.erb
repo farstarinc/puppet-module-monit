@@ -1,6 +1,6 @@
 check process <%= @name %> with pidfile <%= @pidfile %>
-  start program = "/etc/init.d/<%= @name %> start"
-  stop program  = "/etc/init.d/<%= @name %> stop"
+  start program = "<%= @start_script %>"
+  stop program  = "<%= @stop_script %>"
 <% if @ip_port.to_i > 0 -%>
   if failed port <%= @ip_port %> then restart
 <% elsif @socket -%>
@@ -9,4 +9,4 @@ check process <%= @name %> with pidfile <%= @pidfile %>
 <% @checks.each do |check| -%>
   <%= check %>
 <% end -%>
-  group <%= @name %>
+  group <%= @group %>
