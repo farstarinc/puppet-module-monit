@@ -27,7 +27,7 @@ class monit::params {
       $logrotate_script = '/etc/logrotate.d/monit'
       $logrotate_source = 'logrotate.redhat.erb'
     }
-    'Debian': {
+    'Debian','Ubuntu': {
       $conf_file        = '/etc/monit/monitrc'
       $conf_dir         = '/etc/monit/conf.d'
       $default_conf     = '/etc/default/monit'
