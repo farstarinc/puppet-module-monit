@@ -52,7 +52,8 @@ set logfile <%= @logfile %>
 #                backup.bar.baz port 10025,  # backup mailserver on port 10025
 #                localhost                   # fallback relay
 #
-#
+set mailserver <%= mailserver %>
+
 ## By default Monit will drop alert events if no mail servers are available. 
 ## If you want to keep the alerts for later delivery retry, you can use the 
 ## EVENTQUEUE statement. The base directory where undelivered alerts will be 

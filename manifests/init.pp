@@ -4,11 +4,12 @@
 #
 # === Parameters
 #
-# [*ensure*]   - If you want the service running or not
-# [*admin*]    - Admin email address
-# [*interval*] - How frequently the check runs
-# [*logfile*]  - What file for monit use for logging
-#
+# [*ensure*]    - If you want the service running or not
+# [*admin*]     - Admin email address
+# [*interval*]  - How frequently the check runs
+# [*delay*]     - How long to wait before actually performing any action
+# [*logfile*]   - What file for monit use for logging
+# [*mailserver] - Which mailserver to use
 # === Examples
 #
 #  class { 'monit':
