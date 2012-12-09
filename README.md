@@ -33,7 +33,7 @@ To install and configure Monit, include the module:
 You can override defaults in the Monit config by including
 the module with this special syntax:
 
-    class { monit: admin => "eivind@uggedal.com", interval => 30 }
+    class { monit: admin => "eivind@uggedal.com but not on { instance pid ppid }", interval => 30, delay => 240 }
 
 Setting up monitoring of processes is done with the `monit::site` resource.
 Note that the name needs to be the same as an init script in `/etc/init.d`:

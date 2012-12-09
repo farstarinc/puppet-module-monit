@@ -4,11 +4,12 @@
 #
 # === Parameters
 #
-# [*ensure*]   - If you want the service running or not
-# [*admin*]    - Admin email address
-# [*interval*] - How frequently the check runs
-# [*logfile*]  - What file for monit use for logging
-#
+# [*ensure*]    - If you want the service running or not
+# [*admin*]     - Admin email address
+# [*interval*]  - How frequently the check runs
+# [*delay*]     - How long to wait before actually performing any action
+# [*logfile*]   - What file for monit use for logging
+# [*mailserver] - Which mailserver to use
 # === Examples
 #
 #  class { 'monit':
@@ -26,18 +27,22 @@
 # Copyright 2011 Eivind Uggedal <eivind@uggedal.com>
 #
 class monit (
-  $ensure   = present,
-  $admin    = undef,
-  $interval = 60,
-  $logfile  = $monit::params::logfile,
+  $ensure     = present,
+  $admin      = undef,
+  $interval   = 60,
+  $delay      = $interval * 2,
+  $logfile    = $monit::params::logfile,
+  $mailserver = 'localhost', 
 ) inherits monit::params {
 
   $conf_include = "${monit::params::conf_dir}/*"
 
   if ($ensure == 'present') {
     $run_service = true
+    $service_state = 'running'
   } else {
     $run_service = false
+    $service_state = 'stopped'
   }
 
   package { $monit::params::monit_package:
@@ -77,7 +82,7 @@ class monit (
   }
 
   service { $monit::params::monit_service:
-    ensure     => $ensure,
+    ensure     => $service_state,
     enable     => $run_service,
     hasrestart => true,
     hasstatus  => true,
