@@ -1,12 +1,13 @@
 <%= @logfile %> {
         rotate 4
         weekly
+        minsize 1M
         missingok
         create 640 root adm
         notifempty
         compress
         delaycompress
         postrotate
-                invoke-rc.d monit restart > /dev/null
+                invoke-rc.d monit reload > /dev/null
         endscript
 }
