@@ -67,11 +67,16 @@ class monit (
 
   # Not all platforms need this
   if ($monit::params::default_conf) {
+   if ($monit::params::default_conf_tpl) {
     file { $monit::params::default_conf:
       ensure  => $ensure,
-      content => "startup=1\n",
+      content => template("monit/$monit::params::default_conf_tpl"),
       require => Package[$monit::params::monit_package],
     }
+
+   }
+   else { fail("You need to provide config template")}
+
   }
 
   # Template uses: $logfile
