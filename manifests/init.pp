@@ -66,8 +66,8 @@ class monit (
   }
 
   # Not all platforms need this
-  if ($monit::params::conf_default) {
-    file { $monit::params::conf_default:
+  if ($monit::params::default_conf) {
+    file { $monit::params::default_conf:
       ensure  => $ensure,
       content => "startup=1\n",
       require => Package[$monit::params::monit_package],
