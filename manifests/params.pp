@@ -16,7 +16,7 @@
 class monit::params {
 
   # OS Specific variables
-  case $::osfamily {
+  case $::lsbdistid {
     'RedHat': {
       $conf_file        = '/etc/monit.conf'
       $conf_dir         = '/etc/monit.d'
@@ -48,10 +48,10 @@ class monit::params {
       $logfile          = '/var/log/monit.log'
       $logrotate_script = '/etc/logrotate.d/monit'
       $logrotate_source = 'logrotate.ubuntu.erb'
-      case $::operatingsystemrelease {
+      case $::lsbdistrelease {
         "10.10": { $default_conf_tpl = 'monit.default.conf.ubuntu.maverick.erb' }
         "12.04": { $default_conf_tpl = 'monit.default.conf.ubuntu.precise.erb'}
-         default: { fail("Unsupported osfamily: ${::osfamily} / ${::operatingsystemrelease}") }
+         default: { fail("Unsupported osfamily: ${::lsbdistid} / ${::lsbdistrelease}") }
        }
     }
     default: {
