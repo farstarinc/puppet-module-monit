@@ -51,6 +51,7 @@ class monit::params {
       case $::lsbdistrelease {
         "10.10": { $default_conf_tpl = 'monit.default.conf.ubuntu.maverick.erb' }
         "12.04": { $default_conf_tpl = 'monit.default.conf.ubuntu.precise.erb'}
+        "12.10": { $default_conf_tpl = 'monit.default.conf.ubuntu.quantal.erb'}
          default: { fail("Unsupported osfamily: ${::lsbdistid} / ${::lsbdistrelease}") }
        }
     }
