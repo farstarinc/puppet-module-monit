@@ -25,7 +25,7 @@ set daemon  <%= interval %> # check services at N-second intervals
 ## a standalone log file instead, specify the full path to the log file
 #
 # set logfile syslog facility log_daemon
-<% if @logfile -%>
+<% if !@logfile.empty? -%>
 set logfile <%= @logfile %>
 <% end -%>
 #
@@ -100,7 +100,7 @@ set mailserver <%= mailserver %>
 ## service defined in this file has errors. Alerts may be restricted on 
 ## events by using a filter as in the second example below. 
 #
-<% if @admin -%>
+<% if !@admin.empty? -%>
 set alert <%= @admin %>                       # receive all alerts
 <% end -%>
 # set alert manager@foo.bar only on { timeout }  # receive just service-
