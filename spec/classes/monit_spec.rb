@@ -5,6 +5,7 @@ describe 'monit', :type => :class do
     let :facts do
       {
         :osfamily        => 'RedHat',
+        :lsbdistid       => 'RedHat',
         :kernel          => 'Linux',
         :operatingsystem => 'CentOS',
       }
@@ -26,6 +27,7 @@ describe 'monit', :type => :class do
     let :facts do
       {
         :osfamily        => 'Debian',
+        :lsbdistid       => 'Debian',
         :kernel          => 'Linux',
         :operatingsystem => 'Debian',
       }
