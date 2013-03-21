@@ -16,7 +16,7 @@
 class monit::params {
 
   # OS Specific variables
-  case $::lsbdistid {
+  case $::osfamily {
     'RedHat': {
       $conf_file        = '/etc/monit.conf'
       $conf_dir         = '/etc/monit.d'
@@ -36,24 +36,23 @@ class monit::params {
       $monit_service    = 'monit'
       $logfile          = '/var/log/monit.log'
       $logrotate_script = '/etc/logrotate.d/monit'
-      $logrotate_source = 'logrotate.debian.erb'
-      $default_conf_tpl ='monit.default.conf.ubuntu.maverick.erb'
-    }
-    'Ubuntu': {
-      $conf_file        = '/etc/monit/monitrc'
-      $conf_dir         = '/etc/monit/conf.d'
-      $default_conf     = '/etc/default/monit'
-      $monit_package    = 'monit'
-      $monit_service    = 'monit'
-      $logfile          = '/var/log/monit.log'
-      $logrotate_script = '/etc/logrotate.d/monit'
-      $logrotate_source = 'logrotate.ubuntu.erb'
-      case $::lsbdistrelease {
-        "10.10": { $default_conf_tpl = 'monit.default.conf.ubuntu.maverick.erb' }
-        "12.04": { $default_conf_tpl = 'monit.default.conf.ubuntu.precise.erb'}
-        "12.10": { $default_conf_tpl = 'monit.default.conf.ubuntu.quantal.erb'}
-         default: { fail("Unsupported osfamily: ${::lsbdistid} / ${::lsbdistrelease}") }
-       }
+      case $::operatingsystem {
+        'Debian': {
+          $id_dir           = '/var/lib/monit'
+          $idfile           = '/var/lib/monit/id'
+          $logrotate_source = 'logrotate.debian.erb'
+          $default_conf_tpl ='monit.default.conf.ubuntu.maverick.erb'
+        }
+        'Ubuntu': {
+          $logrotate_source = 'logrotate.ubuntu.erb'
+          case $::lsbdistrelease {
+            "10.10": { $default_conf_tpl = 'monit.default.conf.ubuntu.maverick.erb' }
+            "12.04": { $default_conf_tpl = 'monit.default.conf.ubuntu.precise.erb'}
+            "12.10": { $default_conf_tpl = 'monit.default.conf.ubuntu.quantal.erb'}
+            default: { fail("Unsupported lsbdistid: ${::lsbdistid} / ${::lsbdistrelease}") }
+          }
+        }
+      }
     }
     default: {
       fail("Unsupported osfamily: ${::osfamily}")

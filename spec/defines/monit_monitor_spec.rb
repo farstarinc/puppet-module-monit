@@ -5,7 +5,7 @@ describe 'monit::monitor', :type => :define do
     let :facts do
       {
         :osfamily        => 'RedHat',
-        :lsbdistid       => 'RedHat',
+        :lsbdistid       => 'CentOS',
         :kernel          => 'Linux',
         :operatingsystem => 'CentOS',
       }
@@ -96,9 +96,10 @@ describe 'monit::monitor', :type => :define do
     let :facts do
       {
         :osfamily        => 'Debian',
-        :lsbdistid       => 'Debian',
+        :lsbdistid       => 'Ubuntu',
+        :lsbdistrelease  => '12.10',
         :kernel          => 'Linux',
-        :operatingsystem => 'Debian',
+        :operatingsystem => 'Ubuntu',
       }
     end
 
