@@ -182,6 +182,30 @@ describe 'monit::monitor', :type => :define do
         )
       end
     end
+
+    context "Custom user & group ID  (osfamily = Debian)" do
+      let(:title) { 'monit-monitor-uidgid' }
+
+      let(:params) {
+        {
+          'pidfile'       => '/var/run/monit.pid',
+          'start_script'  => '/bin/start_my_app',
+          'stop_script'   => '/bin/stop_my_app',
+          'uid'           => 'www-data',
+          'gid'           => 'users',
+        }
+      }
+
+      it 'should compile' do
+        should contain_file('/etc/monit/conf.d/monit-monitor-uidgid.conf').with_content(
+          "check process monit-monitor-uidgid with pidfile /var/run/monit.pid\n" +
+          "  start program = \"/bin/start_my_app\" as uid \"www-data\" and gid \"users\"\n" +
+          "  stop program  = \"/bin/stop_my_app\"\n" +
+          "  group monit-monitor-uidgid\n"
+        )
+      end
+    end
+
   end
 
 end

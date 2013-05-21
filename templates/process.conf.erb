@@ -1,5 +1,5 @@
 check process <%= @name %> with pidfile <%= @pidfile %>
-  start program = "<%= @start_script %>"
+  start program = "<%= @start_script %>" <%= "as uid \"#{uid}\" and gid \"#{gid}\"" if uid != '' and gid != '' %>
 <% if @start_timeout -%>
     with timeout <%= @start_timeout %> seconds
 <% end -%>

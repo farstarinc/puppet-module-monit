@@ -38,10 +38,12 @@ define monit::monitor (
   $start_timeout = undef,
   $stop_timeout  = undef,
   $group         = $name,
+  $uid           = '',
+  $gid           = '',
 ) {
   include monit::params
 
-  # Template uses: $pidfile, $ip_port, $socket, $checks, $start_script, $stop_script, $start_timeout, $stop_timeout, $group
+  # Template uses: $pidfile, $ip_port, $socket, $checks, $start_script, $stop_script, $start_timeout, $stop_timeout, $group, $uid, $gid
   file { "${monit::params::conf_dir}/$name.conf":
     ensure  => $ensure,
     content => template('monit/process.conf.erb'),
