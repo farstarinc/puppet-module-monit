@@ -30,10 +30,17 @@ class monit (
   $ensure     = present,
   $admin      = undef,
   $interval   = 60,
-  $delay      = $interval * 2,
+  $delay      = undef,
   $logfile    = $monit::params::logfile,
   $mailserver = 'localhost', 
 ) inherits monit::params {
+
+  if ($delay == undef) {
+    $use_delay = $interval * 2
+  }
+  else {
+    $use_delay = $delay
+  }
 
   $conf_include = "${monit::params::conf_dir}/*"
 
