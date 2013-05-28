@@ -97,7 +97,7 @@ class monit (
     ensure     => $service_state,
     enable     => $run_service,
     hasrestart => true,
-    hasstatus  => true,
+    hasstatus  => $monit::params::service_has_status,
     subscribe  => File[$monit::params::conf_file],
     require    => [
       File[$monit::params::conf_file],
