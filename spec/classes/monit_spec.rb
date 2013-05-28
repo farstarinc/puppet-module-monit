@@ -20,6 +20,44 @@ describe 'monit', :type => :class do
         should contain_file('/etc/logrotate.d/monit')
         should contain_service('monit')
       end
+
+      it 'should have service status' do
+        should contain_service('monit').with({
+          'hasstatus' => true,
+        })
+      end
+    end
+  end
+
+  context "lsbdistcodename = squeeze" do
+    let :facts do
+      {
+        :osfamily        => 'Debian',
+        :operatingsystem => 'Debian',
+        :lsbdistcodename => 'squeeze'
+      }
+    end
+
+    it 'should not have service status' do
+      should contain_service('monit').with({
+        'hasstatus' => false,
+      })
+    end
+  end
+
+  context "lsbdistcodename = wheezy" do
+    let :facts do
+      {
+        :osfamily        => 'Debian',
+        :operatingsystem => 'Debian',
+        :lsbdistcodename => 'wheezy'
+      }
+    end
+
+    it 'should have service status' do
+      should contain_service('monit').with({
+        'hasstatus' => true,
+      })
     end
   end
 
