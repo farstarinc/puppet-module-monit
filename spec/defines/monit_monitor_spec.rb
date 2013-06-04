@@ -11,6 +11,29 @@ describe 'monit::monitor', :type => :define do
       }
     end
 
+    context "both pidfile and matching specified" do
+      let(:title) { 'monit-monitor-both-pidfile-mathcing' }
+
+      let(:params) {
+        {
+          'pidfile' => '/var/run/monit.pid',
+          'matching' => 'some_process_name',
+        }
+      }
+      it { 
+        expect { should raise_error(Puppet::Error) }
+      } 
+    end
+
+    context "no pidfile nor matching specified" do
+      let(:title) { 'monit-monitor-no-pidfile-mathcing' }
+
+      let(:params) { }
+      it { 
+        expect { should raise_error(Puppet::Error) }
+      } 
+    end
+
     context "default usage (osfamily = RedHat)" do
       let(:title) { 'monit-monitor-basic' }
 
@@ -22,6 +45,20 @@ describe 'monit::monitor', :type => :define do
 
       it 'should compile' do
         should contain_file('/etc/monit.d/monit-monitor-basic.conf')
+      end
+    end
+
+    context "default usage (osfamily = RedHat)" do
+      let(:title) { 'monit-monitor-basic2' }
+
+      let(:params) {
+        {
+          'matching' => 'some_process_name',
+        }
+      }
+
+      it 'should compile' do
+        should contain_file('/etc/monit.d/monit-monitor-basic2.conf')
       end
     end
 
