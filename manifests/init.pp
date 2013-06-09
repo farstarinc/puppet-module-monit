@@ -66,10 +66,11 @@ class monit (
   }
 
   file { $monit::params::conf_dir:
-    ensure => directory,
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0755',
+    ensure  => directory,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+    require => Package[$monit::params::monit_package],
   }
 
   # Not all platforms need this
