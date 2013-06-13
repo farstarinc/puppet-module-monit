@@ -45,14 +45,16 @@ define monit::monitor (
 ) {
   include monit::params
   if ($pidfile == undef) and ($matching == undef) {
-    fail("Only one of pidfile and matching must be specified.")
+    fail('Only one of pidfile and matching must be specified.')
   }
   if ($pidfile != undef) and ($matching != undef) {
-    fail("One of pidfile and matching must be specified.")
+    fail('One of pidfile and matching must be specified.')
   }
 
-  # Template uses: $pidfile, $ip_port, $socket, $checks, $start_script, $stop_script, $start_timeout, $stop_timeout, $group, $uid, $gid
-  file { "${monit::params::conf_dir}/$name.conf":
+  # Template uses: $pidfile, $ip_port, $socket, $checks,
+  #                $start_script, $stop_script, $start_timeout,
+  #                $stop_timeout, $group, $uid, $gid
+  file { "${monit::params::conf_dir}/${name}.conf":
     ensure  => $ensure,
     content => template('monit/process.conf.erb'),
     notify  => Service[$monit::params::monit_service],
