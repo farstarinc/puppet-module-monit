@@ -86,6 +86,16 @@ class monit (
     require => Package[$monit::params::monit_package],
   }
 
+  if $::osfamily == 'redhat' {
+    file { '/var/lib/monit':
+	    ensure  => directory,
+	    owner   => 'root',
+	    group   => 'root',
+	    mode    => '0755',
+	    before  => Service[$monit::params::monit_service]
+	  }
+  }
+
   service { $monit::params::monit_service:
     ensure     => $service_state,
     enable     => $run_service,
