@@ -85,13 +85,6 @@ class monit (
     } else { fail('You need to provide config template')}
   }
 
-  # Template uses: $logfile
-  file { $monit::params::logrotate_script:
-    ensure  => $ensure,
-    content => template("monit/${monit::params::logrotate_source}"),
-    require => Package[$monit::params::monit_package],
-  }
-
   if $::osfamily == 'redhat' {
     file { '/var/lib/monit':
 	    ensure  => directory,
@@ -102,15 +95,32 @@ class monit (
 	  }
   }
 
-  service { $monit::params::monit_service:
-    ensure     => $service_state,
-    enable     => $run_service,
-    hasrestart => true,
-    hasstatus  => $monit::params::service_has_status,
-    subscribe  => File[$monit::params::conf_file],
-    require    => [
-      File[$monit::params::conf_file],
-      File[$monit::params::logrotate_script]
-    ],
+  if ($logfile =~ /syslog/) {
+    service { $monit::params::monit_service:
+      ensure     => $service_state,
+      enable     => $run_service,
+      hasrestart => true,
+      hasstatus  => $monit::params::service_has_status,
+      subscribe  => File[$monit::params::conf_file],
+      require    => File[$monit::params::conf_file],
+    }
+  } else {
+    # Template uses: $logfile
+    file { $monit::params::logrotate_script:
+      ensure  => $ensure,
+      content => template("monit/${monit::params::logrotate_source}"),
+      require => Package[$monit::params::monit_package],
+    }
+    service { $monit::params::monit_service:
+      ensure     => $service_state,
+      enable     => $run_service,
+      hasrestart => true,
+      hasstatus  => $monit::params::service_has_status,
+      subscribe  => File[$monit::params::conf_file],
+      require    => [
+        File[$monit::params::conf_file],
+        File[$monit::params::logrotate_script]
+      ],
+    }
   }
 }
