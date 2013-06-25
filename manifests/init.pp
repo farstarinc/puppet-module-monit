@@ -87,12 +87,12 @@ class monit (
 
   if $::osfamily == 'redhat' {
     file { '/var/lib/monit':
-	    ensure  => directory,
-	    owner   => 'root',
-	    group   => 'root',
-	    mode    => '0755',
-	    before  => Service[$monit::params::monit_service]
-	  }
+      ensure  => directory,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0755',
+      before  => Service[$monit::params::monit_service]
+    }
   }
 
   if ($logfile =~ /syslog/) {
