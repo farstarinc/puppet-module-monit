@@ -57,13 +57,20 @@ class monit (
     ensure => $ensure,
   }
 
-  # Template uses: $admin, $conf_include, $interval, $logfile
+  # Template uses: $admin, $conf_include, $interval, $logfile, $idfile
   file { $monit::params::conf_file:
     ensure  => $ensure,
     content => template('monit/monitrc.erb'),
     mode    => '0600',
     require => Package[$monit::params::monit_package],
     notify  => Service[$monit::params::monit_service],
+  }
+
+  file { $monit::params::id_dir:
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
   }
 
   file { $monit::params::conf_dir:

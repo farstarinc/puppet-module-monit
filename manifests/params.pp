@@ -23,6 +23,8 @@ class monit::params {
       $default_conf       = undef
       $monit_package      = 'monit'
       $monit_service      = 'monit'
+      $id_dir             = '/var/lib/monit'
+      $idfile             = '/var/lib/monit/id'
       $logfile            = '/var/log/monit'
       $logrotate_script   = '/etc/logrotate.d/monit'
       $logrotate_source   = 'logrotate.redhat.erb'
@@ -35,6 +37,8 @@ class monit::params {
       $default_conf     = '/etc/default/monit'
       $monit_package    = 'monit'
       $monit_service    = 'monit'
+      $id_dir           = '/var/lib/monit'
+      $idfile           = '/var/lib/monit/id'
       $logfile          = '/var/log/monit.log'
       $logrotate_script = '/etc/logrotate.d/monit'
       case $::operatingsystem {
