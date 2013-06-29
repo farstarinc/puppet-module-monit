@@ -71,6 +71,7 @@ class monit (
     owner  => 'root',
     group  => 'root',
     mode   => '0755',
+    before => Service[$monit::params::monit_service]
   }
 
   file { $monit::params::conf_dir:
@@ -90,16 +91,6 @@ class monit (
         require => Package[$monit::params::monit_package],
       }
     } else { fail('You need to provide config template')}
-  }
-
-  if $::osfamily == 'redhat' {
-    file { '/var/lib/monit':
-      ensure  => directory,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0755',
-      before  => Service[$monit::params::monit_service]
-    }
   }
 
   if ($logfile =~ /syslog/) {
