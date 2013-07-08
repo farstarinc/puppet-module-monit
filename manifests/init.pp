@@ -36,6 +36,8 @@ class monit (
 ) {
   include monit::params
 
+  $idfile = $monit::params::idfile
+
   if ($delay == undef) {
     $use_delay = $interval * 2
   }
