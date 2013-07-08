@@ -33,6 +33,7 @@ class monit (
   $delay      = undef,
   $logfile    = $monit::params::logfile,
   $mailserver = 'localhost',
+  $mailformat = undef,
 ) {
   include monit::params
 
