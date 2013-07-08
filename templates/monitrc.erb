@@ -93,6 +93,9 @@ set mailserver <%= mailserver %>
 ## or sender using the MAIL-FORMAT statement. Macros such as $DATE, etc.
 ## are expanded at runtime. For example, to override the sender, use:
 #
+<% if @mailformat and ! @mailformat.empty? -%>
+  set mail-format {<%= @mailformat %>}
+<% end -%>
 # set mail-format { from: monit@foo.bar }
 #
 #
