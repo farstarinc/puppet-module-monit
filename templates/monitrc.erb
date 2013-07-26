@@ -25,8 +25,8 @@ set daemon  <%= interval %> # check services at N-second intervals
 ## a standalone log file instead, specify the full path to the log file
 #
 # set logfile syslog facility log_daemon
-<% if @logfile and ! @logfile.empty? -%>
-set logfile <%= @logfile %>
+<% if @logfile_real and ! @logfile_real.empty? -%>
+set logfile <%= @logfile_real %>
 <% end -%>
 #
 #

@@ -31,13 +31,18 @@ class monit (
   $admin      = undef,
   $interval   = 60,
   $delay      = undef,
-  $logfile    = $monit::params::logfile,
+  $logfile    = 'UNSET',
   $mailserver = 'localhost',
   $mailformat = undef,
 ) {
   include monit::params
 
   $idfile = $monit::params::idfile
+
+  $logfile_real = $logfile ? {
+    'UNSET' => $monit::params::logfile,
+    default => $logfile
+  }
 
   if ($delay == undef) {
     $use_delay = $interval * 2
@@ -60,7 +65,7 @@ class monit (
     ensure => $ensure,
   }
 
-  # Template uses: $admin, $conf_include, $interval, $logfile, $idfile
+  # Template uses: $admin, $conf_include, $interval, $logfile_real, $idfile
   file { $monit::params::conf_file:
     ensure  => $ensure,
     content => template('monit/monitrc.erb'),
@@ -96,7 +101,7 @@ class monit (
     } else { fail('You need to provide config template')}
   }
 
-  if ($logfile =~ /syslog/) {
+  if ($logfile_real =~ /syslog/) {
     service { $monit::params::monit_service:
       ensure     => $service_state,
       enable     => $run_service,
@@ -106,7 +111,7 @@ class monit (
       require    => File[$monit::params::conf_file],
     }
   } else {
-    # Template uses: $logfile
+    # Template uses: $logfile_real
     file { $monit::params::logrotate_script:
       ensure  => $ensure,
       content => template("monit/${monit::params::logrotate_source}"),
