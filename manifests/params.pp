@@ -47,8 +47,6 @@ class monit::params {
             'squeeze': { $service_has_status = false }
             default:   { $service_has_status = true }
           }
-          $id_dir           = '/var/lib/monit'
-          $idfile           = '/var/lib/monit/id'
           $logrotate_source = 'logrotate.debian.erb'
           $default_conf_tpl = 'monit.default.conf.ubuntu.maverick.erb'
         }
