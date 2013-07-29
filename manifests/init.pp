@@ -31,13 +31,17 @@ class monit (
   $admin      = undef,
   $interval   = 60,
   $delay      = undef,
+  $idfile     = 'UNSET',
   $logfile    = 'UNSET',
   $mailserver = 'localhost',
   $mailformat = undef,
 ) {
   include monit::params
 
-  $idfile = $monit::params::idfile
+  $idfile_real = $idfile ? {
+    'UNSET' => $monit::params::idfile,
+    default => $idfile
+  }
 
   $logfile_real = $logfile ? {
     'UNSET' => $monit::params::logfile,
