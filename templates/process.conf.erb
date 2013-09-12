@@ -3,7 +3,7 @@ check process <%= @name %> with pidfile <%= @pidfile %>
 <% elsif @matching -%>
 check process <%= @name %> matching <%= @matching %>
 <% end -%>
-  start program = "<%= @start_script %>"<%= " as uid \"#{uid}\" and gid \"#{gid}\"" if uid != '' and gid != '' %>
+  start program = "<%= @start_script %>"<%= " as uid \"#{uid}\" and gid \"#{gid}\"" if @uid != '' and @gid != '' %>
 <% if @start_timeout -%>
     with timeout <%= @start_timeout %> seconds
 <% end -%>
