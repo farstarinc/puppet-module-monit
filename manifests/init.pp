@@ -55,7 +55,7 @@ class monit (
     $use_delay = $delay
   }
 
-  $conf_include = "${monit::params::conf_dir}/*"
+  $conf_include = "${monit::params::conf_dir}/*.conf"
 
   if ($ensure == 'present') {
     $run_service = true
