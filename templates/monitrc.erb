@@ -16,9 +16,9 @@
 ##
 ## Start Monit in the background (run as a daemon):
 #
-set daemon  <%= interval %> # check services at N-second intervals
+set daemon  <%= @interval %> # check services at N-second intervals
 <% if @use_delay.to_i != 0 %>
-   with start delay <%= use_delay  %> # delay the first check N*2
+   with start delay <%= @use_delay  %> # delay the first check N*2
 <% end %>
 #
 #
@@ -56,7 +56,7 @@ set logfile <%= @logfile_real %>
 #                backup.bar.baz port 10025,  # backup mailserver on port 10025
 #                localhost                   # fallback relay
 #
-set mailserver <%= mailserver %>
+set mailserver <%= @mailserver %>
 
 ## By default Monit will drop alert events if no mail servers are available. 
 ## If you want to keep the alerts for later delivery retry, you can use the 

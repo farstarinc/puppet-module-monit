@@ -12,6 +12,23 @@ describe 'monit', :type => :class do
     end
 
     context "default usage (osfamily = RedHat)" do
+      let(:title) { 'monit-syslog' }
+
+      let :params do
+        {
+          :logfile => 'blah syslog blah',
+        }
+      end
+
+      it 'should compile' do
+        should_not contain_file('/etc/logrotate.d/monit')
+        should contain_file('/etc/monit.conf').with({
+          'content' => /^set logfile blah syslog blah$/,
+        })
+      end
+    end
+
+    context "default usage (osfamily = RedHat)" do
       let(:title) { 'monit-basic' }
 
       it 'should compile' do
