@@ -9,6 +9,7 @@
 # [*ensure*]       - If the file should be enforced or not (default: present)
 # [*ip_port*]      - Port to check if needed (zero to disable)
 # [*socket*]       - Path to socket file if needed (undef to disable)
+# [*alerts*]       - Array of monit alert statements
 # [*checks*]       - Array of monit check statements
 # [*start_script*] - Scipt used to start the process
 # [*stop_script*]  - Scipt used to start the process
@@ -34,6 +35,7 @@ define monit::monitor (
   $ensure        = present,
   $ip_port       = 0,
   $socket        = undef,
+  $alerts        = [ ],
   $checks        = [ ],
   $start_script  = "/etc/init.d/${name} start",
   $stop_script   = "/etc/init.d/${name} stop",
@@ -51,7 +53,7 @@ define monit::monitor (
     fail('One of pidfile and matching must be specified.')
   }
 
-  # Template uses: $pidfile, $ip_port, $socket, $checks,
+  # Template uses: $pidfile, $ip_port, $socket, $alerts, $checks,
   #                $start_script, $stop_script, $start_timeout,
   #                $stop_timeout, $group, $uid, $gid
   file { "${monit::params::conf_dir}/${name}.conf":
