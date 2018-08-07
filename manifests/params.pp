@@ -18,7 +18,14 @@ class monit::params {
   # OS Specific variables
   case $::osfamily {
     'RedHat': {
-      $conf_file          = '/etc/monit.conf'
+      case $::operatingsystem {
+        'Amazon': {
+          $conf_file      = '/etc/monitrc'
+        }
+        default: {
+          $conf_file      = '/etc/monit.conf'
+        }
+      }
       $conf_dir           = '/etc/monit.d'
       $default_conf       = undef
       $monit_package      = 'monit'
